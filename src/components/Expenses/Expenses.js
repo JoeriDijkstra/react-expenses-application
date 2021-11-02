@@ -1,12 +1,23 @@
+import { useState } from "react";
 import ExpenseItem from "./ExpenseItem";
+import ExpensesFilter from "./ExpensesFilter";
 import Card from "../GenericUI/Card";
 import "./Expenses.css";
 
 function Expenses(props) {
   const expenses = props.expenses;
+  const [selectDate, setSelectDate] = useState("2020");
+
+  const filterUpdateHandler = (filterData) => {
+    setSelectDate(filterData);
+  };
 
   return (
     <Card className="expenses">
+      <ExpensesFilter
+        selected={selectDate}
+        onFilterUpdate={filterUpdateHandler}
+      />
       <ExpenseItem
         title={expenses[0].title}
         amount={expenses[0].amount}

@@ -6,8 +6,9 @@ function ExpenseForm(props) {
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredDate, setEnteredDate] = useState("");
   const [enteredAmount, setEnteredAmount] = useState("");
+  const [showAddDisplay, setShowAddDisplay] = useState(false);
 
-  const titleChangeHanlder = (event) => {
+  const titleChangeHandler = (event) => {
     setEnteredTitle(event.target.value);
   };
 
@@ -19,12 +20,21 @@ function ExpenseForm(props) {
     setEnteredAmount(event.target.value);
   };
 
+  const cancelHandler = (event) => {
+    setShowAddDisplay(false);
+  };
+
+  const displayAddHandler = () => {
+    setShowAddDisplay(true);
+  };
+
   const submitHandler = (event) => {
     event.preventDefault();
+    setShowAddDisplay(false);
 
     const expenseData = {
       title: enteredTitle,
-      amount: enteredAmount,
+      amount: +enteredAmount,
       date: new Date(enteredDate),
     };
 
@@ -39,7 +49,15 @@ function ExpenseForm(props) {
     setEnteredDate("");
   };
 
-  return (
+  let defaultContent = (
+    <div className="new-expense__controls">
+      <div className="new-expense__actions">
+        <button onClick={displayAddHandler}>Add Expense</button>
+      </div>
+    </div>
+  );
+
+  let addContent = (
     <form onSubmit={submitHandler}>
       <div className="new-expense__controls">
         <div className="new-expense__control">
@@ -47,7 +65,7 @@ function ExpenseForm(props) {
           <input
             type="text"
             value={enteredTitle}
-            onChange={titleChangeHanlder}
+            onChange={titleChangeHandler}
           />
         </div>
         <div className="new-expense__control">
@@ -72,10 +90,12 @@ function ExpenseForm(props) {
         </div>
       </div>
       <div className="new-expense__actions">
+        <button onClick={cancelHandler}>Cancel</button>
         <button type="submit">Add Expense</button>
       </div>
     </form>
   );
+  return showAddDisplay ? addContent : defaultContent;
 }
 
 export default ExpenseForm;
